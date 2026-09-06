@@ -24,7 +24,6 @@ DESTDIR=/ cmake --install build
 # Deploy dependencies
 quick-sharun \
 	/usr/local/bin/chipass* \
-	/usr/local/lib/chipass* \
 	/usr/lib/libpcsclite*.so*
 
 # Additional changes can be done in between here
