@@ -1,57 +1,58 @@
-name: Anylinux-AppImage (Nightly)
-concurrency:
-  group: build-${{ github.ref }}
-  cancel-in-progress: true
-on:
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# comment these two out to enable nightly builds, This sets the variable DEVEL_RELEASE=1 for  #
-# get-dependencies.sh to make a nightly release, this will make a release with 'nightly' tag  #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#  schedule:
-#    - cron: "0 5 1/2 * *" # We default to rebuilding nightly every 2 days, change this to your liking
-  workflow_dispatch: {}
+name: Temporal test
+
+on: workflow_dispatch
 
 jobs:
-  build:
-    name: "${{ matrix.name }} (${{ matrix.arch }})"
-    runs-on: ${{ matrix.runs-on }}
-    strategy:
-      matrix:
-        include:
-          - runs-on: ubuntu-latest
-            name: Build AppImage
-            arch: x86_64
-          # comment out these 3 lines if aarch64 is not wanted
-          - runs-on: ubuntu-24.04-arm
-            name: Build AppImage
-            arch: aarch64
-    container: ghcr.io/pkgforge-dev/archlinux:latest
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - name: Preparing Container
-        uses: pkgforge-dev/anylinux-setup-action@0964f2258d6c93d1391359978dde081fd8b3c6af # v2
-      - name: Install Dependencies
-        run: DEVEL_RELEASE=1 /bin/sh ./get-dependencies.sh
-      - name: Make AppImage
-        run: DEVEL_RELEASE=1 /bin/sh ./make-appimage.sh
-      - name: Upload artifact
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-        with:
-          name: AppImage-${{ matrix.arch }}
-          path: dist
-
-  release:
-    if: ${{ github.ref_name == 'main' }}
-    needs: [build]
-    permissions: write-all
+  build-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+      - name: Check out workflow context
+        uses: actions/checkout@v6
+
+      - name: Clone ChiPass repository
+        run: |
+          git clone --depth 1 https://codeberg.org/ChiPass/ChiPass.git .
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ccache cmake ninja-build \
+            qt6-base-dev qt6-base-private-dev qt6-svg-dev qt6-tools-dev qt6-5compat-dev libreadline-dev \
+            libbotan-2-dev libargon2-dev libminizip-dev zlib1g-dev libqrencode-dev libpcsclite-dev libusb-1.0-0-dev \
+            xvfb xclip libxi-dev libxtst-dev \
+            asciidoctor
+
+      - name: Set up caching
+        uses: actions/cache@v4
         with:
-          pattern: AppImage-*
-          merge-multiple: true
-        continue-on-error: true
-      - name: Release Nightly AppImage
-        uses: pkgforge-dev/make-nightly-appimage-release@17cbe90fc0796286e424619a54a82a3a880efe4c # v1.1
+          path: ~/.cache/ccache
+          key: ChiPass-${{ hashFiles('.github/workflows/ci.yml', 'cmake/**', 'src/**', 'CMakeLists.txt') }}
+          restore-keys: |
+            ChiPass-${{ hashFiles('.github/workflows/ci.yml', 'cmake/**', 'src/**', 'CMakeLists.txt') }}
+            ChiPass-
+
+      - name: Set up ccache
+        run: |
+          ccache --max-size=3G -z
+
+      - name: Configure
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DWITH_CCACHE=ON \
+            -DWITH_XC_ALL=ON \
+            -DWITH_GUI_TESTS=OFF
+
+      - name: Build
+        run: |
+          cmake --build build
+
+      - name: Print ccache statistics
+        run: |
+          ccache -s
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          name: chipass-linux
+          path: build/
