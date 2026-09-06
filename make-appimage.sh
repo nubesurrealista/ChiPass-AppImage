@@ -4,7 +4,7 @@ set -eu
 
 ARCH=$(uname -m)
 
-VERSION=$(build/src/chipass --version 2>/dev/null | awk '{print $2}' || echo "latest")
+VERSION=$(/usr/local/bin/chipass --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1 || echo "latest")
 
 export ARCH VERSION
 export OUTPATH=./dist
@@ -18,8 +18,6 @@ export ALWAYS_SOFTWARE=1
 # remove them so that they do not get deployed
 rm -rf /usr/lib/qt6/plugins/wayland-graphics-integration-server 2>/dev/null || true
 rm -rf /usr/lib/qt/plugins/wayland-graphics-integration-server 2>/dev/null || true
-
-DESTDIR=/ cmake --install build
 
 # Deploy dependencies
 quick-sharun \
