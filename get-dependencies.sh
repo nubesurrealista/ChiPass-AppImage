@@ -46,3 +46,6 @@ cmake -S src -B build -G Ninja \
 	-DWITH_XC_ALL=ON \
 	-DWITH_GUI_TESTS=OFF
 cmake --build build
+
+echo "Installing ChiPass globally..."
+DESTDIR=/ cmake --install build
