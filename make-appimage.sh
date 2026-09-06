@@ -4,7 +4,12 @@ set -eu
 
 ARCH=$(uname -m)
 
-VERSION=$(/usr/local/bin/chipass --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1 || echo "latest")
+# Extract version components from src/CMakeLists.txt
+MAJOR=$(grep -i "set(KEEPASSXC_VERSION_MAJOR" src/CMakeLists.txt | cut -d '"' -f 2 || echo "2")
+MINOR=$(grep -i "set(KEEPASSXC_VERSION_MINOR" src/CMakeLists.txt | cut -d '"' -f 2 || echo "7")
+PATCH=$(grep -i "set(KEEPASSXC_VERSION_PATCH" src/CMakeLists.txt | cut -d '"' -f 2 || echo "0")
+
+VERSION="${MAJOR}.${MINOR}.${PATCH}"
 
 export ARCH VERSION
 export OUTPATH=./dist
@@ -14,8 +19,8 @@ export ICON=/usr/local/share/icons/hicolor/256x256/apps/chipass.png
 export DESKTOP=/usr/local/share/applications/org.chipass.ChiPass.desktop
 export ALWAYS_SOFTWARE=1
 
-# on archlinux qt5-wayland also adds the server side plugins
-# remove them so that they do not get deployed
+# On Arch Linux qt5-wayland also adds the server-side plugins
+# Remove them so that they do not get deployed
 rm -rf /usr/lib/qt6/plugins/wayland-graphics-integration-server 2>/dev/null || true
 rm -rf /usr/lib/qt/plugins/wayland-graphics-integration-server 2>/dev/null || true
 
@@ -29,6 +34,5 @@ quick-sharun \
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
 
-# Test the app for 12 seconds, if the test fails due to the app
-# having issues running in the CI use --simple-test instead
+# Test the app for 12 seconds
 quick-sharun --test ./dist/*.AppImage
