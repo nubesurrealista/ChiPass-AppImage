@@ -41,6 +41,7 @@ get-debloated-pkgs --add-common --prefer-nano
 echo "Building ChiPass..."
 git clone https://codeberg.org/ChiPass/ChiPass.git src
 cmake -S src -B build -G Ninja \
+	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DWITH_CCACHE=ON \
 	-DWITH_XC_ALL=ON \
