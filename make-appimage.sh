@@ -27,8 +27,7 @@ rm -rf /usr/lib/qt/plugins/wayland-graphics-integration-server 2>/dev/null || tr
 # Deploy dependencies
 quick-sharun \
 	/usr/bin/chipass* \
-	/usr/lib/chipass \
-	/usr/lib/keepassxc \
+	/usr/lib/gio/modules/*.so \
 	/usr/lib/libpcsclite_real.so*
 
 # Additional changes can be done in between here
