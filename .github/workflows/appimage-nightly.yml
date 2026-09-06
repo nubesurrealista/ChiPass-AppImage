@@ -6,11 +6,9 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out ChiPass source code
-        uses: actions/checkout@v6
-        with:
-          repository: https://codeberg.org/ChiPass/ChiPass
-          fetch-depth: 0
+      - name: Clone ChiPass repository
+        run: |
+          git clone https://codeberg.org/ChiPass/ChiPass.git .
 
       - name: Install dependencies
         run: |
