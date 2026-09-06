@@ -10,8 +10,8 @@ export ARCH VERSION
 export OUTPATH=./dist
 export ADD_HOOKS="self-updater.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
-export ICON=/usr/share/icons/hicolor/256x256/apps/chipass.png
-export DESKTOP=/usr/share/applications/org.chipass.ChiPass.desktop
+export ICON=/usr/local/share/icons/hicolor/256x256/apps/chipass.png
+export DESKTOP=/usr/local/share/applications/org.chipass.ChiPass.desktop
 export ALWAYS_SOFTWARE=1
 
 # on archlinux qt5-wayland also adds the server side plugins
@@ -23,8 +23,8 @@ DESTDIR=/ cmake --install build
 
 # Deploy dependencies
 quick-sharun \
-	/usr/bin/chipass* \
-	/usr/lib/chipass* \
+	/usr/local/bin/chipass* \
+	/usr/local/lib/chipass* \
 	/usr/lib/libpcsclite*.so*
 
 # Additional changes can be done in between here
