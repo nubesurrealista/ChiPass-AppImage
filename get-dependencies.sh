@@ -7,11 +7,27 @@ ARCH=$(uname -m)
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
-	keepassxc   \
-	kvantum-qt5 \
-	pcsclite    \
-	qt5ct       \
-	qt5-wayland
+	git \
+	ccache \
+	cmake \
+	ninja \
+	qt6-base \
+	qt6-svg \
+	qt6-tools \
+	qt6-5compat \
+	readline \
+	botan \
+	argon2 \
+	minizip \
+	zlib \
+	qrencode \
+	pcsclite \
+	libusb \
+	xorg-server-xvfb \
+	xclip \
+	libxi \
+	libxtst \
+	asciidoctor
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
@@ -22,10 +38,11 @@ get-debloated-pkgs --add-common --prefer-nano
 
 # If the application needs to be manually built that has to be done down here
 
-# if you also have to make nightly releases check for DEVEL_RELEASE = 1
-#
-# if [ "${DEVEL_RELEASE-}" = 1 ]; then
-# 	nightly build steps
-# else
-# 	regular build steps
-# fi
+echo "Building ChiPass..."
+git clone https://codeberg.org/ChiPass/ChiPass.git .
+cmake -S . -B build -G Ninja \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DWITH_CCACHE=ON \
+	-DWITH_XC_ALL=ON \
+	-DWITH_GUI_TESTS=OFF
+cmake --build build
