@@ -4,12 +4,8 @@ set -eu
 
 ARCH=$(uname -m)
 
-# Extract version components from src/CMakeLists.txt
-MAJOR=$(grep -i "set(KEEPASSXC_VERSION_MAJOR" src/CMakeLists.txt | cut -d '"' -f 2 || echo "2")
-MINOR=$(grep -i "set(KEEPASSXC_VERSION_MINOR" src/CMakeLists.txt | cut -d '"' -f 2 || echo "7")
-PATCH=$(grep -i "set(KEEPASSXC_VERSION_PATCH" src/CMakeLists.txt | cut -d '"' -f 2 || echo "0")
-
-VERSION="${MAJOR}.${MINOR}.${PATCH}"
+# Extract version from src/CHANGELOG.md matching ChiPassVersion.cmake
+VERSION=$(sed -n '1s/^Version \([0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}\).*/\1/p' src/CHANGELOG.md)
 
 export ARCH VERSION
 export OUTPATH=./dist
