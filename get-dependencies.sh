@@ -27,6 +27,7 @@ pacman -Syu --noconfirm \
 	xclip \
 	libxi \
 	libxtst \
+	appstream \
 	asciidoctor
 
 echo "Installing debloated packages..."
