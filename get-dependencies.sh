@@ -44,9 +44,10 @@ git clone https://codeberg.org/ChiPass/ChiPass.git src
 cmake -S src -B build -G Ninja \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DCMAKE_BUILD_TYPE=Release \
-	-DWITH_CCACHE=ON \
-	-DWITH_XC_ALL=ON \
-	-DWITH_GUI_TESTS=OFF
+	-DCHIPASS_COMPILER_LAUNCHER=ccache \
+	-DCHIPASS_WITH_UPDATE_CHECK=OFF \
+	-DCHIPASS_WITH_GUI_TESTS=OFF \
+	-DCHIPASS_WITH_TESTS=OFF
 cmake --build build
 
 echo "Installing ChiPass globally..."
