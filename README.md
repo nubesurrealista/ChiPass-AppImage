@@ -2,9 +2,9 @@
 
 # ChiPass-AppImage🐧
 
-[![GitHub Downloads](https://img.shields.io/github/downloads/pkgforge-dev/KeePassXC-AppImage-Enhanced/total?logo=github&label=GitHub%20Downloads)](https://github.com/pkgforge-dev/KeePassXC-AppImage-Enhanced/releases/latest)
-[![CI Build Status](https://github.com/pkgforge-dev/KeePassXC-AppImage-Enhanced/actions/workflows/appimage.yml/badge.svg)](https://github.com/pkgforge-dev/KeePassXC-AppImage-Enhanced/releases/latest)
-[![Latest Stable Release](https://img.shields.io/github/v/release/pkgforge-dev/KeePassXC-AppImage-Enhanced)](https://github.com/pkgforge-dev/KeePassXC-AppImage-Enhanced/releases/latest)
+[![GitHub Downloads](https://img.shields.io/github/downloads/pkgforge-dev/ChiPass-AppImage/total?logo=github&label=GitHub%20Downloads)](https://github.com/pkgforge-dev/ChiPass-AppImage/releases/latest)
+[![CI Build Status](https://github.com/pkgforge-dev/ChiPass-AppImage/actions/workflows/appimage.yml/badge.svg)](https://github.com/pkgforge-dev/ChiPass-AppImage/releases/latest)
+[![Latest Stable Release](https://img.shields.io/github/v/release/pkgforge-dev/ChiPass-AppImage)](https://github.com/pkgforge-dev/ChiPass-AppImage/releases/latest)
 
 <p align="center">
   <img src="https://codeberg.org/avatars/a3adbd3a4a4df413c626daf004fb745436bd3822975f8e6c31e9434cc84a370c" width="128" />
@@ -13,9 +13,7 @@
 
 | Latest Stable Release | Upstream URL |
 | :---: | :---: |
-| [Click here](https://github.com/pkgforge-dev/KeePassXC-AppImage-Enhanced/releases/latest) | [Click here](https://codeberg.org/ChiPass/ChiPass) |
-
-Improved AppImage of KeePassXC **independent of the host libc** making it able to work on very very old distros as well as musl-libc distros like alpine linux.
+| [Click here](https://github.com/pkgforge-dev/ChiPass-AppImage/releases/latest) | [Click here](https://codeberg.org/ChiPass/ChiPass) |
 
 </div>
 
