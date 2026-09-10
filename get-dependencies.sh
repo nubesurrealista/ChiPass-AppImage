@@ -7,11 +7,9 @@ ARCH=$(uname -m)
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
-	git \
 	ccache \
 	cmake \
 	ninja \
-	qt6-base \
 	qt6-svg \
 	qt6-tools \
 	qt6-5compat \
@@ -23,7 +21,6 @@ pacman -Syu --noconfirm \
 	qrencode \
 	pcsclite \
 	libusb \
-	xorg-server-xvfb \
 	xclip \
 	libxi \
 	libxtst \
@@ -52,3 +49,5 @@ cmake --build build
 
 echo "Installing ChiPass globally..."
 DESTDIR=/ cmake --install build
+
+sed -n '1s/^Version \([0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}\).*/\1/p' src/CHANGELOG.md > ~/version
