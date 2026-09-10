@@ -7,28 +7,28 @@ ARCH=$(uname -m)
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
-	git \
+	appstream \
+	argon2 \
+	asciidoctor \
+	botan \
 	ccache \
 	cmake \
-	ninja \
-	qt6-base \
-	qt6-svg \
-	qt6-tools \
-	qt6-5compat \
-	readline \
-	botan \
-	argon2 \
-	minizip \
-	zlib \
-	qrencode \
-	pcsclite \
+	kvantum \
 	libusb \
-	xorg-server-xvfb \
-	xclip \
 	libxi \
 	libxtst \
-	appstream \
-	asciidoctor
+	lxqt-qtplugin \
+	minizip \
+	ninja \
+	pcsclite \
+	qrencode \
+	qt6-5compat \
+	qt6ct \
+	qt6-svg \
+	qt6-tools \
+	readline \
+	xclip \
+	zlib
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
@@ -52,3 +52,5 @@ cmake --build build
 
 echo "Installing ChiPass globally..."
 DESTDIR=/ cmake --install build
+
+sed -n '1s/^Version \([0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}\).*/\1/p' src/CHANGELOG.md > ~/version
