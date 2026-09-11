@@ -40,7 +40,9 @@ get-debloated-pkgs --add-common --prefer-nano
 # If the application needs to be manually built that has to be done down here
 
 echo "Building ChiPass..."
-git clone https://codeberg.org/ChiPass/ChiPass.git src
+REPO=https://codeberg.org/ChiPass/ChiPass.git && \
+git clone $REPO --single-branch --branch \
+$(git ls-remote --tags $REPO | grep -wv "}$" | cut -d/ -f3 | sort -V | tail -n1) src
 cmake -S src -B build -G Ninja \
 	-DCMAKE_INSTALL_PREFIX=/usr \
 	-DCMAKE_BUILD_TYPE=Release \
